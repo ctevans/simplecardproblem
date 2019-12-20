@@ -120,19 +120,68 @@ class Deck {
     // suit > num
 
     // Firstly suit values.
-    if (lhsCard.get_value().ordinal() < rhsCard.get_value().ordinal()) {
-      return true;
-    }
-    if (lhsCard.get_value().ordinal() > rhsCard.get_value().ordinal()) {
-      return false;
+    // Actually this was trickier than expected, the suit ordering doesn't
+    // follow the enum ordinals. So cases are handled manually.
+    switch (lhsCard.get_suit()) {
+    case SPADES:
+      if (rhsCard.get_suit().equals(Card.Suit.HEARTS)) {
+        return false;
+      }
+      if (rhsCard.get_suit().equals(Card.Suit.CLUBS)) {
+        return false;
+      }
+      if (rhsCard.get_suit().equals(Card.Suit.DIAMONDS)) {
+        return false;
+      }
+      break;
+
+    case HEARTS:
+      if (rhsCard.get_suit().equals(Card.Suit.SPADES)) {
+        return true;
+      }
+      if (rhsCard.get_suit().equals(Card.Suit.CLUBS)) {
+        return false;
+      }
+      if (rhsCard.get_suit().equals(Card.Suit.DIAMONDS)) {
+        return false;
+      }
+      break;
+
+    case CLUBS:
+      if (rhsCard.get_suit().equals(Card.Suit.SPADES)) {
+        return true;
+      }
+      if (rhsCard.get_suit().equals(Card.Suit.HEARTS)) {
+        return true;
+      }
+      if (rhsCard.get_suit().equals(Card.Suit.DIAMONDS)) {
+        return false;
+      }
+      break;
+
+    case DIAMONDS:
+      if (rhsCard.get_suit().equals(Card.Suit.SPADES)) {
+        return true;
+      }
+      if (rhsCard.get_suit().equals(Card.Suit.HEARTS)) {
+        return true;
+      }
+      if (rhsCard.get_suit().equals(Card.Suit.CLUBS)) {
+        return true;
+      }
+      break;
+
     }
 
-    // Now face values if the suit values are equal.
-    if (lhsCard.is_less_than(rhsCard)) {
-      return true;
-    } else {
+    // // Now face values if the suit values are equal.
+    if (lhsCard.is_greater_than(rhsCard)) {
       return false;
+    } else if (lhsCard.is_less_than(rhsCard)) {
+      return true;
     }
+
+    return true;
+
   }
 
   /**
